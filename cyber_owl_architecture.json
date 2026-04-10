@@ -1,0 +1,67 @@
+{
+    "project_name": "Cyber Owl Parental Control System",
+    "description": "A comprehensive parental control system featuring a Windows PC client for monitoring and an Android mobile app for remote management.",
+    "codebase_structure": {
+        "pc_client": {
+            "directory": "Main_Cyber_Owl_App",
+            "frontend": {
+                "type": "Flutter Desktop Application",
+                "path": "main_login_system/main_login_system",
+                "role": "Provides local UI for login, dashboard, and manages the lifecycle of the Python backend."
+            },
+            "backend": {
+                "type": "Python Flask Server",
+                "path": "api_server_updated.py",
+                "port": 5000,
+                "role": "Handles core logic, API endpoints, and hardware monitoring.",
+                "modules": {
+                    "machine_learning": {
+                        "audio_toxicity": "test8.py (DistilBERT model)",
+                        "screen_nudity": "Call.py (NudeNet model)"
+                    },
+                    "email_notifications": "mailformat/email_system/email_manager.py",
+                    "database": "SQLite (users.db) for credentials and detection history"
+                }
+            }
+        },
+        "mobile_client": {
+            "directory": "Cyber_Owl_Mobile_App/CyberOwl_android",
+            "type": "Flutter Android Application",
+            "role": "Remote dashboard for parents to view alerts, system status, and control monitoring.",
+            "features": [
+                "Real-time Dashboard",
+                "Remote Start/Stop Control",
+                "Local Push Notifications",
+                "Alert History"
+            ]
+        },
+        "bridge_backend": {
+            "directory": "Cyber_Owl_Mobile_App/bridge_backend",
+            "type": "Python FastAPI Server",
+            "role": "Acts as a secure intermediary for remote access when devices are not on the same network.",
+            "communication": "WebSockets for PC connection, REST API for Mobile commands"
+        }
+    },
+    "workflows": {
+        "pc_startup_and_login": [
+            "1. User launches Flutter Desktop application.",
+            "2. Flutter app spawns the Python Flask backend on port 5000.",
+            "3. Flutter app performs health check ping until backend is ready.",
+            "4. User signs in via Flutter frontend, which authenticates against the local SQLite DB."
+        ],
+        "monitoring_and_detection": [
+            "1. Monitoring is started (locally or remotely).",
+            "2. Background worker captures 2.5s audio chunks and screen frames.",
+            "3. Data is passed to DistilBERT (speech-to-text toxicity) and NudeNet (image).",
+            "4. If confidence score > 0.7, detection is logged to DB.",
+            "5. Email alert sent to parent via SMTP.",
+            "6. Mobile app polls or receives WebSocket event for push notification."
+        ],
+        "mobile_remote_control": [
+            "1. Mobile app connects to PC backend directly (same WiFi/ngrok) OR via Bridge Server.",
+            "2. Authenticates and fetches real-time stats and alerts.",
+            "3. Parent sends 'Stop Monitoring' command with Secret Code.",
+            "4. API/Bridge forwards command to PC backend to instantly halt worker threads."
+        ]
+    }
+}

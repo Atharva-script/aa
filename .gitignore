@@ -1,0 +1,35 @@
+# Environments
+.venv/
+venv/
+env/
+ENV/
+
+# Build artifacts
+build/
+bin/
+obj/
+*.exe
+*.pkg
+*.dll
+*.so
+*.dylib
+
+# Flutter
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Workspace / Logs
+.vscode/
+*.log
+session.json
+.DS_Store
+.stealth_mode
+.autologin_credentials

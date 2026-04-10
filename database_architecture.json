@@ -1,0 +1,108 @@
+{
+    "database_architecture": {
+        "pc_local_database": {
+            "type": "SQLite",
+            "file": "users.db",
+            "role": "Local storage for the Windows PC client. Stores credentials, monitoring rules, and detection logs locally to work offline and ensure privacy.",
+            "tables": {
+                "users": {
+                    "columns": {
+                        "email": "TEXT PRIMARY KEY",
+                        "password": "TEXT NOT NULL",
+                        "name": "TEXT",
+                        "secret_code": "TEXT",
+                        "google_id": "TEXT UNIQUE",
+                        "profile_pic": "TEXT",
+                        "auth_provider": "TEXT DEFAULT 'email'",
+                        "phone": "TEXT",
+                        "country": "TEXT",
+                        "age": "TEXT",
+                        "parent_email": "TEXT"
+                    }
+                },
+                "otp_codes": {
+                    "columns": {
+                        "email": "TEXT PRIMARY KEY",
+                        "otp": "TEXT NOT NULL",
+                        "created_at": "REAL NOT NULL"
+                    }
+                },
+                "feedback": {
+                    "columns": {
+                        "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
+                        "user_email": "TEXT NOT NULL (FK to users.email)",
+                        "message": "TEXT",
+                        "rating": "REAL",
+                        "timestamp": "DATETIME DEFAULT CURRENT_TIMESTAMP"
+                    }
+                },
+                "detection_history": {
+                    "columns": {
+                        "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
+                        "timestamp": "TEXT NOT NULL",
+                        "source": "TEXT",
+                        "label": "TEXT",
+                        "score": "REAL",
+                        "latency_ms": "REAL",
+                        "matched": "INTEGER",
+                        "sentence": "TEXT",
+                        "type": "TEXT",
+                        "user": "TEXT"
+                    }
+                },
+                "monitoring_rules": {
+                    "columns": {
+                        "id": "TEXT PRIMARY KEY",
+                        "title": "TEXT",
+                        "description": "TEXT",
+                        "isEnabled": "INTEGER DEFAULT 1",
+                        "category": "TEXT"
+                    }
+                }
+            }
+        },
+        "mobile_and_bridge_database": {
+            "type": "PostgreSQL / Supabase",
+            "role": "Cloud database used by the Bridge Server and the Android Mobile App to sync devices and handle remote commands.",
+            "tables": {
+                "users": {
+                    "columns": {
+                        "id": "Integer PRIMARY KEY",
+                        "email": "String UNIQUE",
+                        "hashed_password": "String",
+                        "full_name": "String",
+                        "google_id": "String",
+                        "profile_photo": "String",
+                        "is_admin": "Boolean DEFAULT False",
+                        "secret_code": "String",
+                        "created_at": "DateTime"
+                    }
+                },
+                "devices": {
+                    "columns": {
+                        "id": "String PRIMARY KEY (Hardware ID)",
+                        "user_id": "Integer (FK to users.id) / user_email (String)",
+                        "device_name": "String",
+                        "device_type": "String",
+                        "platform": "String DEFAULT 'WINDOWS'",
+                        "ip_address": "String",
+                        "status": "String (ONLINE/OFFLINE)",
+                        "last_seen": "DateTime",
+                        "created_at": "DateTime"
+                    }
+                },
+                "command_logs": {
+                    "columns": {
+                        "id": "Integer PRIMARY KEY",
+                        "user_id": "Integer (FK to users.id)",
+                        "device_id": "String (FK to devices.id)",
+                        "action": "String",
+                        "status": "String (PENDING, SENT, EXECUTED, FAILED)",
+                        "result": "String",
+                        "timestamp": "DateTime"
+                    }
+                }
+            }
+        }
+    }
+}
