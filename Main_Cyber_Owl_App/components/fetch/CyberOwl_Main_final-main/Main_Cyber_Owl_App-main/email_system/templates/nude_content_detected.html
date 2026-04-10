@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensitive Content Detected - Cyber Owl</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border-top: 5px solid #be123c;
+            /* Darker Pink/Red for Sensitive */
+        }
+
+        .header {
+            background-color: #0f172a;
+            color: #ffffff;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .logo {
+            width: 50px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .brand-name {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .tagline {
+            font-size: 12px;
+            color: #94a3b8;
+            letter-spacing: 2px;
+            margin-top: 5px;
+            text-transform: uppercase;
+        }
+
+        .content {
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .status-card {
+            background-color: #fff1f2;
+            /* Light Pink */
+            border: 1px solid #fecdd3;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .icon {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 20px;
+            color: #db2777;
+            /* Pink 600 */
+        }
+
+        .title {
+            color: #881337;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+        }
+
+        .message {
+            color: #9d174d;
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #be123c;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-top: 25px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #9f1239;
+        }
+
+        .footer {
+            background-color: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            padding: 20px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        /* Email-client friendly interactive CSS */
+        .evidence-wrapper:hover img,
+        .evidence-wrapper:active img,
+        .evidence-wrapper:focus-within img {
+            filter: none !important;
+            -webkit-filter: none !important;
+            transform: scale(1) !important;
+        }
+
+        .evidence-wrapper:hover .overlay-text,
+        .evidence-wrapper:active .overlay-text,
+        .evidence-wrapper:focus-within .overlay-text,
+        .evidence-wrapper:hover .fog-overlay,
+        .evidence-wrapper:active .fog-overlay,
+        .evidence-wrapper:focus-within .fog-overlay {
+            opacity: 0 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <img src="https://cyber-owl.netlify.app/assets/logo.png" alt="Cyber Owl Logo" class="logo">
+            <h1 class="brand-name">CYBER OWL</h1>
+            <div class="tagline">ENSURE CHILD SECURITY</div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <div class="status-card">
+                <!-- SVG Icon for Eye/Alert -->
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21">
+                    </path>
+                </svg>
+
+                <h2 class="title">Sensitive Content Detected</h2>
+                <p class="message">
+                    Inappropriate or nude content has been detected on the monitored device. This requires your verified
+                    access to review.
+                </p>
+
+                <div class="alert-details"
+                    style="margin-top: 20px; text-align: left; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #fecdd3;">
+                    <div class="detail-row"
+                        style="display: flex; justify-content: space-between; border-bottom: 1px solid #f3f4f6; padding: 8px 0;">
+                        <span class="detail-label" style="font-weight: 600; color: #4b5563;">Time:</span>
+                        <span class="detail-value" style="color: #1f2937;">{{timestamp}}</span>
+                    </div>
+                    <div class="detail-row"
+                        style="display: flex; justify-content: space-between; border-bottom: 1px solid #f3f4f6; padding: 8px 0;">
+                        <span class="detail-label" style="font-weight: 600; color: #4b5563;">Confidence:</span>
+                        <span class="detail-value" style="color: #be123c; font-weight: bold;">{{confidence}}</span>
+                    </div>
+                    <div class="detail-row" style="padding: 8px 0;">
+                        <span class="detail-label" style="font-weight: 600; color: #4b5563;">Detection Details:</span>
+                        <div class="detail-value" style="color: #1f2937; margin-top: 8px;">{{detection_details}}</div>
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="evidence-section" style="margin-top: 25px; text-align: center;">
+                    <p style="font-weight: 600; color: #4b5563; margin-bottom: 10px;">Evidence Screenshot:</p>
+                    <img src="cid:nude_evidence" alt="Sensitive Content Evidence"
+                        style="max-width: 100%; border-radius: 8px; border: 2px solid #be123c; display: block;">
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            &copy; 2026 Cyber Owl Defense System.<br>
+            Ensuring a safer digital environment for everyone.
+        </div>
+    </div>
+</body>
+
+</html>

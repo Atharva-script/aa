@@ -1,0 +1,41 @@
+PySide6>=6.5.0
+PyQt6>=6.5.0
+pyaudiowpatch>=0.2.0
+sounddevice>=0.4.6
+soundcard>=0.4.0
+SpeechRecognition>=3.10.0
+pydub>=0.25.1
+googletrans==4.0.0rc1
+detoxify>=0.5.0
+transformers>=4.30.0
+torch>=2.0.0
+torchvision>=0.15.0
+pytesseract>=0.3.10
+Pillow>=10.0.0
+opencv-python>=4.8.0
+mss>=9.0.0
+PyAutoGUI>=0.9.54
+yt-dlp>=2023.7.6
+moviepy>=1.0.3
+numpy>=1.24.0
+scipy>=1.11.0
+pandas>=2.0.0
+nudenet>=3.0.0
+sentencepiece>=0.1.99
+protobuf>=4.23.0
+
+# Additional packages required by the audio-to-text component
+scikit-learn
+nltk
+deepface
+matplotlib
+imageio-ffmpeg
+ffmpeg-python
+langdetect
+pyahocorasick
+python-dotenv
+
+# Note: install these in a virtual environment on Windows (see README below)
+# Note: install these in a virtual environment on Windows (see README below)
+
+googletrans==4.0.0rc1

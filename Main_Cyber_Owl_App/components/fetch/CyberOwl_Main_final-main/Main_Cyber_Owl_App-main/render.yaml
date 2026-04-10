@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: cyber-owl-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --worker-class eventlet -w 1 --bind 0.0.0.0:$PORT api_server_updated:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.0
+      - key: SERVER_PORT
+        value: 5000
+      - key: MONGO_URI
+        sync: false
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false
+      - key: ALERT_EMAIL_TO
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true

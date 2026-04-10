@@ -1,0 +1,35 @@
+# Virtual environments
+.venv/
+venv/
+
+# IDE
+.idea/
+.vscode/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Environment variables (contains secrets)
+.env
+
+# ML artifacts
+*.pkl
+model_cache/
+logs/
+
+# Build artifacts
+dist/
+build/
+*.exe
+CyberOwl_setup/bin/
+*.onnx
+
+# Log files
+*.log
+
+# Screenshots
+screenshots/
+
+# NOTE: *.db files are NOT excluded - local SQLite database is needed for hybrid mode
+# The cyber_owl.db file stores local data that syncs with Supabase cloud

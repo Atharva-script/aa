@@ -1,0 +1,43 @@
+name: main_login_system
+description: A Flutter login system application.
+publish_to: 'none'
+version: 2.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  http: ^1.1.0
+  font_awesome_flutter: ^10.7.0
+  fluentui_system_icons: ^1.1.255
+  shared_preferences: ^2.3.0
+  image_picker: ^1.0.7
+  flutter_svg: ^2.0.10+1
+  lottie: ^2.7.0
+  google_sign_in_all_platforms: ^1.2.1
+  fl_chart: ^0.66.0
+  path: ^1.9.0
+  window_manager: ^0.4.3
+  system_tray: ^2.0.3
+  path_provider: ^2.1.5
+  socket_io_client: ^3.1.4
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/logo/
+    - assets/app_icon.ico
+    - assets/logo/logo_v2.png
+    - assets/logo/cyber_owl.svg
+    - assets/logo/toxi_logo.json
+    - assets/team/

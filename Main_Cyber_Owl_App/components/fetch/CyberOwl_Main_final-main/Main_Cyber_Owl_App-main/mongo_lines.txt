@@ -1,0 +1,152 @@
+43: from components.mongo_manager import MongoManager
+152: """Initialize MongoDB connection (indexes are handled in MongoManager)"""
+154: MongoManager() # Initialize singleton
+155: logger.info("MongoDB initialized via MongoManager")
+197: db = MongoManager().get_db()
+202: user = db.users.find_one({"email": email})
+207: db.detection_history.insert_one({
+229: db.detection_history.insert_one({
+267: db = MongoManager().get_db()
+273: schedules = list(db.secret_code_schedules.find({"is_active": True}))
+328: db = MongoManager().get_db()
+331: schedules = list(db.secret_code_schedules.find({"is_active": True}))
+389: db.users.update_one(
+395: db.secret_code_schedules.update_one(
+401: user_row = db.users.find_one({"email": email})
+454: db = MongoManager().get_db()
+459: user_row = db.users.find_one({"email": email})
+468: db.users.update_one({"email": email}, {"$set": {"secret_code": new_code}})
+576: db = MongoManager().get_db()
+598: user = db.users.find_one({"email": email})
+606: row = db.secret_code_schedules.find_one({"email": email})
+633: db.secret_code_schedules.update_one(
+692: db = MongoManager().get_db()
+694: user = db.users.find_one({"email": to_email})
+737: db = MongoManager().get_db()
+739: db.users.update_one(
+778: db = MongoManager().get_db()
+780: db.users.update_one(
+995: db = MongoManager().get_db()
+1003: user = db.users.find_one({"email": user_email})
+1011: db.detection_history.insert_one({
+1156: db = MongoManager().get_db()
+1162: user = db.users.find_one({"email": user_email})
+1166: db.detection_history.insert_one({
+1264: db = MongoManager().get_db()
+1265: user = db.users.find_one({"email": email})
+1289: parent = db.users.find_one({"email": parent_email})
+1329: db = MongoManager().get_db()
+1333: user = db.users.find_one({"email": email})
+1351: db.login_history.insert_one({
+1381: db.users.update_one({'_id': user['_id']}, {'$set': update_fields})
+1436: db = MongoManager().get_db()
+1440: if db.users.find_one({"email": email}):
+1464: db.users.insert_one(user_doc)
+1467: db.secret_code_schedules.insert_one({
+1524: db = MongoManager().get_db()
+1528: user_data = db.users.find_one({"email": email})
+1581: db = MongoManager().get_db()
+1585: if not db.users.find_one({"email": email}):
+1599: db.users.update_one({"email": email}, {"$set": update_fields})
+1602: user_data = db.users.find_one({"email": email})
+1657: db = MongoManager().get_db()
+1661: if not db.users.find_one({"email": email}):
+1664: db.feedback.insert_one({
+1707: db = MongoManager().get_db()
+1713: user = db.users.find_one({"email": email})
+1723: db.users.delete_one({"email": email})
+1725: db.otp_codes.delete_one({"email": email})
+1726: db.secret_code_schedules.delete_one({"email": email})
+1814: db = MongoManager().get_db()
+1816: db.users.update_one(
+1843: db = MongoManager().get_db()
+1848: user = db.users.find_one({"email": email})
+1871: db.otp_codes.update_one(
+1903: db = MongoManager().get_db()
+1907: otp_record = db.otp_codes.find_one({"email": email})
+1917: db.otp_codes.delete_one({"email": email})
+1924: user = db.users.find_one({"email": email})
+1932: db.otp_codes.delete_one({"email": email})
+1942: db.users.update_one(
+1951: db.otp_codes.delete_one({"email": email})
+1973: db = MongoManager().get_db()
+1977: user = db.users.find_one({"email": email})
+1999: db.otp_codes.update_one(
+2031: db = MongoManager().get_db()
+2035: otp_record = db.otp_codes.find_one({"email": email})
+2045: db.otp_codes.delete_one({"email": email})
+2052: db.users.update_one({"email": email}, {"$set": {"password": new_password}})
+2055: db.otp_codes.delete_one({"email": email})
+2082: db = MongoManager().get_db()
+2086: user = db.users.find_one({"email": email})
+2096: db.users.update_one({"email": email}, {"$set": {"secret_code": new_code}})
+2141: db = MongoManager().get_db()
+2142: user = db.users.find_one({"email": email})
+2160: db = MongoManager().get_db()
+2164: user_with_parent = db.users.find_one(
+2217: db = MongoManager().get_db()
+2225: user = db.users.find_one({"email": user_email})
+2237: db.detection_history.insert_one({
+2387: db = MongoManager().get_db()
+2389: db.detection_history.insert_one({
+2451: db = MongoManager().get_db()
+2455: user = db.users.find_one({"secret_code": secret_code})
+2482: db = MongoManager().get_db()
+2483: user = db.users.find_one({"email": email})
+2647: db = MongoManager().get_db()
+2649: db.detection_history.insert_one({
+2704: db = MongoManager().get_db()
+2713: user = db.users.find_one({}, sort=[('_id', -1)])
+2731: db.detection_history.insert_one(alert_doc)
+2822: db = MongoManager().get_db()
+2824: cursor = db.users.find({'parent_email': parent_email})
+2883: db = MongoManager().get_db()
+2890: cursor = db.detection_history.find(query).sort([('created_at', -1), ('_id', -1)]).limit(limit)
+2941: db = MongoManager().get_db()
+2944: user = db.users.find_one({'email': child_email, 'parent_email': parent_email})
+2949: db.users.update_one(
+2984: db = MongoManager().get_db()
+3002: cursor = db.detection_history.find(query).sort([('created_at', -1), ('_id', -1)]).limit(limit)
+3037: db = MongoManager().get_db()
+3039: db.detection_history.delete_many({})
+3054: db = MongoManager().get_db()
+3087: stats = list(db.detection_history.aggregate(pipeline))
+3120: db = MongoManager().get_db()
+3217: result = db.detection_history.insert_many(sample_alerts)
+3375: db = MongoManager().get_db()
+3379: user = db.users.find_one({"$or": [{"email": email}, {"google_id": google_id}]})
+3424: db.users.update_one({"email": found_email}, {"$set": updates})
+3427: user_data = db.users.find_one({"email": found_email})
+3449: db.users.insert_one(new_user)
+3455: db.secret_code_schedules.insert_one({
+3496: db = MongoManager().get_db()
+3522: cursor = db.detection_history.find(query).sort('_id', -1)
+3646: db = MongoManager().get_db()
+3666: cursor = db.detection_history.find(query).sort('_id', -1).limit(500)
+3739: db = MongoManager().get_db()
+3759: cursor = db.detection_history.find(query).sort('_id', -1).limit(1000)
+3821: db = MongoManager().get_db()
+3841: cursor = db.detection_history.find(query).sort([('created_at', -1), ('_id', -1)]).limit(100)
+3874: db = MongoManager().get_db()
+3879: result = db.detection_history.delete_many({})
+4011: db = MongoManager().get_db()
+4015: user = db.users.find_one({'email': email})
+4041: db = MongoManager().get_db()
+4045: result = db.users.update_one(
+4052: user = db.users.find_one({'email': email})
+4074: db = MongoManager().get_db()
+4079: user = db.users.find_one({'email': email})
+4104: db.verification_requests.insert_one(request_doc)
+4125: db = MongoManager().get_db()
+4132: cursor = db.verification_requests.find({
+4164: db = MongoManager().get_db()
+4166: result = db.verification_requests.update_one(
+4191: db = MongoManager().get_db()
+4193: doc = db.verification_requests.find_one({'request_id': request_id})
+4200: db.verification_requests.update_one(
+4209: user = db.users.find_one({'email': email})
+4220: # db.verification_requests.delete_one({'request_id': request_id})
+4470: db = MongoManager().get_db()
+4472: user = db.users.find_one({"email": email})
+4641: db = MongoManager().get_db()
+4651: db.users.update_one(

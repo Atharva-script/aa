@@ -1,0 +1,14 @@
+# Android App Signing Configuration
+# IMPORTANT: Keep this file secure and NEVER commit to version control!
+
+# Path to your keystore file (relative to android/ directory)
+storeFile=../cyberowl-release.jks
+
+# Keystore password
+storePassword=CHANGE_THIS_PASSWORD
+
+# Key alias
+keyAlias=cyberowl-release
+
+# Key password
+keyPassword=CHANGE_THIS_PASSWORD

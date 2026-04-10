@@ -1,0 +1,26 @@
+﻿Alias name: cyberowl-release
+Creation date: 08-Feb-2026
+Entry type: PrivateKeyEntry
+Certificate chain length: 1
+Certificate[1]:
+Owner: CN=CyberOwl, OU=Dev, O=CyberOwl, L=Mumbai, ST=MH, C=IN
+Issuer: CN=CyberOwl, OU=Dev, O=CyberOwl, L=Mumbai, ST=MH, C=IN
+Serial number: 96e850b82e0ec18b
+Valid from: Sun Feb 08 23:53:16 IST 2026 until: Thu Jun 26 23:53:16 IST 2053
+Certificate fingerprints:
+	 SHA1: DB:26:C9:81:8A:24:C6:28:FD:DA:EC:2E:D4:F6:A4:BC:5B:2A:BE:74
+	 SHA256: EF:CB:06:69:7F:21:DB:C7:E0:58:D6:DC:4E:A7:98:00:1C:88:1C:EC:B1:D0:C8:93:8C:1A:86:19:B3:8D:9E:20
+Signature algorithm name: SHA384withRSA
+Subject Public Key Algorithm: 2048-bit RSA key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: FC BD 35 D5 89 44 F2 32   41 DD 0B AE 7E F7 EE 38  ..5..D.2A......8
+0010: A1 CA FD 59                                        ...Y
+]
+]
+

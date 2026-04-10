@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CyberOwl Parent</string>
+    <!-- Google Sign-In Web Client ID -->
+    <string name="default_web_client_id">691983497226-ivbclati5704qgd2pnbsslh7inp7vic2.apps.googleusercontent.com</string>
+</resources>

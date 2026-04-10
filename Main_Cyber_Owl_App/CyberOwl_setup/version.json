@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "build_date": "2026-01-19",
+  "name": "Cyber Owl",
+  "description": "Child Safety Monitoring System",
+  "author": "Cyber Owl Defense System",
+  "python_required": "3.8+",
+  "platforms": [
+    "Windows",
+    "Linux",
+    "macOS"
+  ]
+}

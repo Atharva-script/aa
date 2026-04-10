@@ -1,0 +1,61 @@
+# Cyber Owl Backend - Production Dependencies
+# Pinned versions for reproducible builds
+
+# Web Framework
+Flask==3.1.2
+flask-cors==6.0.2
+Flask-SocketIO==5.6.0
+Werkzeug==3.1.5
+python-socketio==5.16.0
+python-engineio==4.13.0
+eventlet==0.40.4
+
+# Audio Processing
+SoundCard==0.4.5
+SpeechRecognition==3.14.5
+audioop-lts==0.2.2
+
+# Machine Learning & AI
+numpy==2.4.1
+scikit-learn==1.8.0
+scipy==1.17.0
+nltk==3.9.2
+transformers==4.57.6
+torch==2.9.1
+sentencepiece==0.2.1
+tokenizers==0.22.2
+huggingface-hub==0.36.0
+safetensors==0.7.0
+
+# Computer Vision
+opencv-python==4.13.0.90
+mss==10.1.0
+pillow==12.1.0
+nudenet>=3.2.0
+
+# Text Processing
+pyahocorasick==2.3.0
+langdetect==1.0.9
+regex==2026.1.15
+
+# Database
+pymongo[srv]==4.16.0
+dnspython==2.8.0
+motor==3.7.1
+
+# Security & Authentication
+bcrypt==5.0.0
+cryptography==46.0.3
+python-jose==3.5.0
+passlib==1.7.4
+
+# Utilities
+python-dotenv==1.2.1
+psutil==7.2.1
+requests==2.32.5
+tqdm==4.67.1
+PyYAML==6.0.3
+click==8.3.1
+
+# Production Server (Optional - for deployment)
+# gunicorn==21.2.0  # Uncomment for Linux/Mac production deployment

@@ -1,0 +1,272 @@
+[
+  {
+    "user": "guest",
+    "timestamp": "00:00:32,733",
+    "source": "live",
+    "label": "Bullying",
+    "score": 0.95,
+    "sentence": "gand mara",
+    "type": "abuse",
+    "log_time": "2026-01-15T22:29:10.965438"
+  },
+  {
+    "user": "guest",
+    "timestamp": "00:00:37,741",
+    "source": "live",
+    "label": "Bullying",
+    "score": 0.95,
+    "sentence": "daravani bahan chod",
+    "type": "abuse",
+    "log_time": "2026-01-15T22:29:16.508379"
+  },
+  {
+    "user": "guest",
+    "timestamp": "00:00:43,042",
+    "source": "live",
+    "label": "Bullying",
+    "score": 0.95,
+    "sentence": "gand Maar Dunga bhosdi ko ki",
+    "type": "abuse",
+    "log_time": "2026-01-15T22:29:21.389003"
+  },
+  {
+    "user": "guest",
+    "timestamp": "00:00:45,538",
+    "source": "live",
+    "label": "Bullying",
+    "score": 0.95,
+    "sentence": "bhosdi ke madrachod bahan ke loade",
+    "type": "abuse",
+    "log_time": "2026-01-15T22:29:24.101543"
+  },
+  {
+    "user": "guest",
+    "timestamp": "00:00:53,047",
+    "source": "live",
+    "label": "Bullying",
+    "score": 0.95,
+    "sentence": "Humko pagal banaa raha hai madrachod ke",
+    "type": "abuse",
+    "log_time": "2026-01-15T22:29:31.567937"
+  },
+  {
+    "user": "guest",
+    "timestamp": "00:01:20,560",
+    "source": "live",
+    "label": "Bullying",
+    "score": 0.95,
+    "sentence": "beti chod",
+    "type": "abuse",
+    "log_time": "2026-01-15T22:30:13.519244"
+  },
+  {
+    "user": "guest",
+    "timestamp": "00:00:22,785",
+    "source": "live",
+    "label": "Bullying",
+    "score": 0.95,
+    "sentence": "gand",
+    "type": "abuse",
+    "log_time": "2026-01-15T22:44:13.389142"
+  },
+  {
+    "user": "guest",
+    "timestamp": "00:00:32,788",
+    "source": "live",
+    "label": "Bullying",
+    "score": 0.95,
+    "sentence": "Khada Rahega gand Maar Dunga bhosdi ko ki",
+    "type": "abuse",
+    "log_time": "2026-01-15T22:44:23.702350"
+  },
+  {
+    "user": "guest",
+    "timestamp": "00:00:35,289",
+    "source": "live",
+    "label": "Bullying",
+    "score": 0.95,
+    "sentence": "bhosdi ke madrachod bahan",
+    "type": "abuse",
+    "log_time": "2026-01-15T22:44:26.083218"
+  },
+  {
+    "user": "guest",
+    "timestamp": "00:00:40,357",
+    "source": "live",
+    "label": "Bullying",
+    "score": 0.95,
+    "sentence": "abe laude Apna Kam kar",
+    "type": "abuse",
+    "log_time": "2026-01-15T22:44:31.143223"
+  },
+  {
+    "user": "guest",
+    "timestamp": "00:00:42,867",
+    "source": "live",
+    "label": "Bullying",
+    "score": 0.95,
+    "sentence": "Sare Milke Humko pagal banaa Rahe madrachod",
+    "type": "abuse",
+    "log_time": "2026-01-15T22:44:33.728377"
+  },
+  {
+    "user": "guest",
+    "timestamp": "22:44:36",
+    "source": "screen",
+    "label": "nudity",
+    "score": 0.42910271883010864,
+    "sentence": "Visual content detected: armpits_exposed",
+    "type": "abuse",
+    "log_time": "2026-01-15T22:44:36.571474"
+  },
+  {
+    "user": "guest",
+    "timestamp": "00:01:10,404",
+    "source": "live",
+    "label": "Bullying",
+    "score": 0.95,
+    "sentence": "beti chod",
+    "type": "abuse",
+    "log_time": "2026-01-15T22:45:01.093873"
+  },
+  {
+    "user": "guest",
+    "timestamp": "00:01:45,456",
+    "source": "live",
+    "label": "Bullying",
+    "score": 0.95,
+    "sentence": "gand mara na chahta hun",
+    "type": "abuse",
+    "log_time": "2026-01-15T22:45:36.112575"
+  },
+  {
+    "user": "guest",
+    "timestamp": "00:01:50,448",
+    "source": "live",
+    "label": "Bullying",
+    "score": 0.95,
+    "sentence": "Kamini bahan chod dunga",
+    "type": "abuse",
+    "log_time": "2026-01-15T22:45:41.248568"
+  },
+  {
+    "user": "guest",
+    "timestamp": "00:02:05,476",
+    "source": "live",
+    "label": "Bullying",
+    "score": 0.95,
+    "sentence": "Humko pagal banaa raha hai madrachod ke bacche",
+    "type": "abuse",
+    "log_time": "2026-01-15T22:45:56.253366"
+  },
+  {
+    "user": "guest",
+    "timestamp": "22:46:00",
+    "source": "screen",
+    "label": "nudity",
+    "score": 0.3711938261985779,
+    "sentence": "Visual content detected: armpits_exposed",
+    "type": "abuse",
+    "log_time": "2026-01-15T22:46:00.060504"
+  },
+  {
+    "user": "guest",
+    "timestamp": "00:02:15,497",
+    "source": "live",
+    "label": "Bullying",
+    "score": 0.95,
+    "sentence": "Chala Ja bhosdi",
+    "type": "abuse",
+    "log_time": "2026-01-15T22:46:06.146766"
+  },
+  {
+    "user": "guest",
+    "timestamp": "00:02:33,005",
+    "source": "live",
+    "label": "Bullying",
+    "score": 0.95,
+    "sentence": "beti chod",
+    "type": "abuse",
+    "log_time": "2026-01-15T22:46:23.721549"
+  },
+  {
+    "user": "guest",
+    "timestamp": "22:49:28",
+    "source": "screen",
+    "label": "nudity",
+    "score": 0.5654803514480591,
+    "sentence": "Visual content detected: buttocks_exposed",
+    "type": "abuse",
+    "log_time": "2026-01-15T22:49:28.660570"
+  },
+  {
+    "user": "guest",
+    "timestamp": "22:51:25",
+    "source": "screen",
+    "label": "nudity",
+    "score": 0.5151202082633972,
+    "sentence": "Visual content detected: female_breast_exposed",
+    "type": "abuse",
+    "log_time": "2026-01-15T22:51:25.821451"
+  },
+  {
+    "user": "guest",
+    "timestamp": "22:51:55",
+    "source": "screen",
+    "label": "nudity",
+    "score": 0.7396255731582642,
+    "sentence": "Visual content detected: belly_exposed",
+    "type": "abuse",
+    "log_time": "2026-01-15T22:51:55.841624"
+  },
+  {
+    "user": "guest",
+    "timestamp": "00:00:10,135",
+    "source": "live",
+    "label": "Bullying",
+    "score": 0.95,
+    "sentence": "gand mara na chahta hun",
+    "type": "abuse",
+    "log_time": "2026-01-15T23:01:43.310709"
+  },
+  {
+    "user": "guest",
+    "timestamp": "00:00:15,144",
+    "source": "live",
+    "label": "Bullying",
+    "score": 0.95,
+    "sentence": "bhenchod",
+    "type": "abuse",
+    "log_time": "2026-01-15T23:01:44.782721"
+  },
+  {
+    "user": "guest",
+    "timestamp": "00:00:20,175",
+    "source": "live",
+    "label": "Bullying",
+    "score": 0.95,
+    "sentence": "gand Maar Dunga bhosdi ko ki",
+    "type": "abuse",
+    "log_time": "2026-01-15T23:01:49.826488"
+  },
+  {
+    "user": "guest",
+    "timestamp": "00:00:30,124",
+    "source": "live",
+    "label": "Bullying",
+    "score": 0.95,
+    "sentence": "Humko pagal banaa raha hai madrachod ke bacche",
+    "type": "abuse",
+    "log_time": "2026-01-15T23:01:59.922472"
+  },
+  {
+    "user": "guest",
+    "timestamp": "00:00:57,663",
+    "source": "live",
+    "label": "Bullying",
+    "score": 0.95,
+    "sentence": "beti chod",
+    "type": "abuse",
+    "log_time": "2026-01-15T23:02:27.280499"
+  }
+]

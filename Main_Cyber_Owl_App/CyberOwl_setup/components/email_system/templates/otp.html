@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Code - Cyber Owl</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border-top: 5px solid #3b82f6;
+        }
+
+        .header {
+            background-color: #0f172a;
+            color: #ffffff;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .logo {
+            width: 50px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .brand-name {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .tagline {
+            font-size: 12px;
+            color: #94a3b8;
+            letter-spacing: 2px;
+            margin-top: 5px;
+            text-transform: uppercase;
+        }
+
+        .content {
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .status-card {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .icon {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 20px;
+            color: #3b82f6;
+        }
+
+        .title {
+            color: #1e293b;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+        }
+
+        .message {
+            color: #64748b;
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .otp-code {
+            display: inline-block;
+            background-color: #eff6ff;
+            color: #1e40af;
+            font-family: monospace;
+            font-size: 32px;
+            font-weight: 700;
+            padding: 15px 30px;
+            border-radius: 8px;
+            margin: 25px 0;
+            letter-spacing: 4px;
+            border: 1px dashed #bfdbfe;
+        }
+
+        .expiry-text {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 10px;
+        }
+
+        .footer {
+            background-color: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            padding: 20px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <img src="https://cyber-owl.netlify.app/assets/logo.png" alt="Cyber Owl Logo" class="logo">
+            <h1 class="brand-name">CYBER OWL</h1>
+            <div class="tagline">ENSURE CHILD SECURITY</div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <div class="status-card">
+                <!-- SVG Icon for Lock/OTP -->
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                    </path>
+                </svg>
+
+                <h2 class="title">Verification Code</h2>
+                <p class="message">
+                    Please use the following One-Time Password (OTP) to verify your identity. Do not share this code
+                    with anyone.
+                </p>
+
+                <div class="otp-code">{{otp}}</div>
+
+                <div class="expiry-text">
+                    This code will expire in 10 minutes.
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            &copy; 2026 Cyber Owl Defense System.<br>
+            Ensuring a safer digital environment for everyone.
+        </div>
+    </div>
+</body>
+
+</html>
