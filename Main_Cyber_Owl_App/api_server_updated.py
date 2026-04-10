@@ -1079,11 +1079,22 @@ def find_best_sources():
     try:
         print("[AUDIO_INIT] Falling back to default soundcard speaker.", flush=True)
         default_sc = sc.default_speaker()
-        lb = sc.get_microphone(id=default_sc.id, include_loopback=True)
-        return ('sc', lb, default_sc.name), None
+        if default_sc:
+            lb = sc.get_microphone(id=default_sc.id, include_loopback=True)
+            return ('sc', lb, default_sc.name), None
     except Exception as e:
         print(f"[AUDIO_INIT] Default fallback failed: {e}", flush=True)
-        return (None, None, "None Found"), None
+
+    # FINAL FALLBACK: Default Microphone (if no loopback)
+    try:
+        print("[AUDIO_INIT] ⚠️ No loopback found. Falling back to default microphone.", flush=True)
+        default_mic = sc.default_microphone()
+        if default_mic:
+             return ('sc', default_mic, default_mic.name), "No Loopback Found - Using Mic"
+    except Exception:
+        pass
+
+    return None, "No audio capture sources available"
 
 
 def _audio_capture_subprocess(device_id, pipe_conn):
@@ -1444,178 +1455,179 @@ def monitoring_worker(device_id='default'):
             except Exception as e:
                 logger.error(f"[MONITOR] process_audio_chunk error: {e}")
 
-        # --- [FIXED] Reliable Audio Capture via threading ---
-        import queue
-        audio_queue = queue.Queue(maxsize=500)
-        stop_event = threading.Event()
-        logger.info("[MONITOR] Searching for audio sources...")
         try:
-            loopback_data, mic_data = find_best_sources()
-            logger.info(f"[MONITOR] Source detection complete. Loopback found: {bool(loopback_data)}")
-        except Exception as e:
-            logger.error(f"[MONITOR] CRITICAL ERROR in find_best_sources: {e}")
-            return
-
-        if not loopback_data:
-            logger.error("[MONITOR] No loopback audio source found. Monitoring aborted.")
-            return
-
-        def internal_record_worker(dev_data, q, stop_ev):
-            """Captures audio from either a sounddevice ('sd') index or soundcard ('sc') object."""
+            # [INITIALIZATION] Ensure models are ready before we even start capture
             try:
-                import numpy as np
-                source_type = dev_data[0]
-                dev = dev_data[1]
-                dev_name = dev_data[2]
-                print(f"[AUDIO_THREAD] Initializing [{source_type.upper()}] for {dev_name}...", flush=True)
+                logger.info("[MONITOR] Pre-initializing abuse detection models...")
+                setup_nltk_and_model() # From test8
+            except Exception as init_err:
+                logger.warning(f"[MONITOR] Failed to pre-initialize models: {init_err}")
 
-                if source_type == 'sd':
-                    # --- sounddevice path (e.g. Stereo Mix via WDM/KS index) ---
-                    import sounddevice as sd
-                    import numpy as np
+            # --- [FIXED] Reliable Audio Capture via threading ---
+            import queue
+            audio_queue = queue.Queue(maxsize=500)
+            stop_event = threading.Event()
+            logger.info("[MONITOR] Searching for audio sources...")
+            
+            loopback_data, error_msg = find_best_sources()
+            if error_msg:
+                logger.warning(f"[MONITOR] Audio discovery warning: {error_msg}")
+            
+            if not loopback_data:
+                logger.error("[MONITOR] No audio source found. Monitoring aborted.")
+                get_device_state(device_id)['running'] = False
+                socketio.emit('status_update', {'device_id': device_id, 'running': False}, room=f"device_{device_id}")
+                return
 
-                    # [ROBUST] Query device for native parameters
-                    try:
-                        dev_info = sd.query_devices(dev, 'input')
-                        native_rate = int(dev_info['default_samplerate'])
-                        native_channels = int(dev_info['max_input_channels'])
-                        print(f"[AUDIO_THREAD] ✓ Source {dev_name} supports native {native_rate}Hz, {native_channels}ch", flush=True)
-                    except Exception as e:
-                        print(f"[AUDIO_THREAD] Device query failed, guessing 48k/2ch: {e}", flush=True)
-                        native_rate = 48000
-                        native_channels = 2
-
-                    TARGET_RATE = 16000 # Internal rate for BERT/Whisper
-
-                    def _sd_cb(indata, frames, t, status):
-                        if status:
-                            # Silence overflow warnings for production
-                            pass
-                        
-                        # Handle potential multi-channel (Stereo Mix is usually 2ch)
-                        chunk = indata.copy()
-                        if chunk.ndim > 1:
-                            chunk = np.mean(chunk, axis=1) # Downmix to mono
-                        
-                        # [RESAMPLING] Downsample logic if native rate isn't 16k
-                        if native_rate != TARGET_RATE:
-                            step = int(native_rate / TARGET_RATE)
-                            if step > 1:
-                                chunk = chunk[::step] # Simple decimation
-                        
-                        # Energy check & Signal Boost
-                        energy = np.abs(chunk).max()
-                        if energy > 0.00001: # Ultra sensitive scan
-                            chunk = chunk * 60.0 # [BOOSTED] Ensure system audio is loud enough
-                            np.clip(chunk, -1.0, 1.0, out=chunk)
-                            if not q.full():
-                                q.put_nowait(chunk)
-                        else:
-                            if not q.full():
-                                q.put_nowait(chunk)
-
-                    print(f"[AUDIO_THREAD] ✓ Opening sounddevice Input stream (Index={dev}) @ {native_rate}Hz", flush=True)
-                    try:
-                        with sd.InputStream(device=dev, channels=native_channels, samplerate=native_rate,
-                                           blocksize=int(native_rate * 0.4), callback=_sd_cb):
-                            print(f"[AUDIO_THREAD] 🚀 Sounddevice stream ACTIVE for {dev_name}", flush=True)
-                            while not stop_ev.is_set():
-                                import time as _t; _t.sleep(0.5)
-                    except Exception as str_err:
-                        print(f"[AUDIO_THREAD] InputStream failed: {str_err}. Attempting fallback to 16k mono...", flush=True)
-                        with sd.InputStream(device=dev, channels=1, samplerate=16000,
-                                           blocksize=3200, callback=_sd_cb):
-                             while not stop_ev.is_set():
-                                import time as _t; _t.sleep(0.5)
-                    print(f"[AUDIO_THREAD] Sounddevice stream stopped.", flush=True)
-
-
-                else:
-                    # --- soundcard path (loopback object) ---
-                    # Similar logic for soundcard if needed, but SD is priority
-                    with dev.recorder(samplerate=SAMPLE_RATE) as rec:
-                        print(f"[AUDIO_THREAD] ✓ Recording started for {dev_name}", flush=True)
-                        while not stop_ev.is_set():
-                            data = rec.record(numframes=int(SAMPLE_RATE * 0.2))  # 200ms
-                            if data.ndim > 1:
-                                data = np.mean(data, axis=1)
-                            
-                            energy = np.abs(data).max()
-                            if energy > 0.0001:
-                                data = data * 25.0 # Boost
-                                np.clip(data, -1.0, 1.0, out=data)
-                                if not q.full():
-                                    q.put_nowait(data)
-                            else:
-                                if not q.full():
-                                    q.put_nowait(data)
-
-            except Exception as xe:
-                print(f"[AUDIO_THREAD] Fatal Error for {dev_name if 'dev_name' in locals() else '?'}: {xe}", flush=True)
-
-        threading.Thread(target=internal_record_worker, args=(loopback_data, audio_queue, stop_event), daemon=True).start()
-        logger.info("✓ Audio capture thread started (Threaded Mode)")
-        
-        idx = 1
-        audio_buffer = []
-        samples_per_chunk = int(SAMPLE_RATE * 3.5)
-        
-        print("\n" + "="*50)
-        print("Starting Abuse Detection Monitoring Loop...")
-        print("="*50 + "\n")
-
-        while get_device_state(device_id)['running']:
-            try:
-                # [HIGH FREQUENCY HEARTBEAT]
-                vol_status = "WAITING (SILENT)"
-                latest_vol = 0
-                if not audio_queue.empty():
-                    # Check recent energy
-                    samples = audio_queue.queue[-1]
-                    latest_vol = np.abs(samples).max()
-                    if latest_vol > 0.001:
-                        vol_status = "SIGNAL OK"
-                
-                fill_width = int(min(latest_vol * 100 * 5, 20)) # Visual meter
-                meter = "█" * fill_width + "░" * (20 - fill_width)
-                _now = datetime.now().strftime("%H:%M:%S")
-                
-                # Use carriage return to keep terminal clean
-                print(f"\r[{_now}] [HEARING] {meter} | {vol_status}             ", end="", flush=True)
-
-                # Get audio data from queue
+            def internal_record_worker(dev_data, q, stop_ev):
+                """Captures audio from either a sounddevice ('sd') index or soundcard ('sc') object."""
+                # [INTERNAL WRAPPER] To prevent the whole thread from dying on capture error
                 try:
-                    data = audio_queue.get(timeout=0.1) 
-                    audio_buffer.extend(data.tolist())
-                except queue.Empty:
-                    pass
-                
-                if len(audio_buffer) >= samples_per_chunk:
-                    # Clear the heartbeat line before printing the processing message
-                    print(f"\n[{datetime.now().strftime('%H:%M:%S')}] [HEARING] Processing {samples_per_chunk} samples for abuse analysis...", flush=True)
+                    import numpy as np
+                    source_type = dev_data[0]
+                    dev = dev_data[1]
+                    dev_name = dev_data[2]
+                    print(f"[AUDIO_THREAD] Initializing [{source_type.upper()}] for {dev_name}...", flush=True)
 
-                    chunk_data = np.array(audio_buffer[:samples_per_chunk], dtype=np.float32)
-                    audio_buffer = audio_buffer[samples_per_chunk:]
+                    if source_type == 'sd':
+                        # --- sounddevice path (e.g. Stereo Mix via WDM/KS index) ---
+                        import sounddevice as sd
+                        # [ROBUST] Query device for native parameters
+                        try:
+                            dev_info = sd.query_devices(dev, 'input')
+                            native_rate = int(dev_info['default_samplerate'])
+                            native_channels = int(dev_info['max_input_channels'])
+                            print(f"[AUDIO_THREAD] ✓ Source {dev_name} supports native {native_rate}Hz, {native_channels}ch", flush=True)
+                        except Exception as e:
+                            print(f"[AUDIO_THREAD] Device query failed, guessing 48k/2ch: {e}", flush=True)
+                            native_rate = 48000
+                            native_channels = 2
+
+                        TARGET_RATE = 16000 # Internal rate for BERT/Whisper
+
+                        def _sd_cb(indata, frames, t, status):
+                            if status: pass
+                            chunk = indata.copy()
+                            if chunk.ndim > 1:
+                                chunk = np.mean(chunk, axis=1) # Downmix to mono
+                            
+                            if native_rate != TARGET_RATE:
+                                step = int(native_rate / TARGET_RATE)
+                                if step > 1:
+                                    chunk = chunk[::step]
+                            
+                            energy = np.abs(chunk).max()
+                            if energy > 0.00001:
+                                chunk = chunk * 60.0 # Boost
+                                np.clip(chunk, -1.0, 1.0, out=chunk)
+                            
+                            if not q.full():
+                                q.put_nowait(chunk)
+
+                        print(f"[AUDIO_THREAD] ✓ Opening sounddevice Input stream (Index={dev}) @ {native_rate}Hz", flush=True)
+                        try:
+                            with sd.InputStream(device=dev, channels=native_channels, samplerate=native_rate,
+                                               blocksize=int(native_rate * 0.4), callback=_sd_cb):
+                                print(f"[AUDIO_THREAD] 🚀 Sounddevice stream ACTIVE for {dev_name}", flush=True)
+                                while not stop_ev.is_set():
+                                    time.sleep(0.5)
+                        except Exception as str_err:
+                            print(f"[AUDIO_THREAD] InputStream failed: {str_err}. Attempting fallback to 16k mono...", flush=True)
+                            with sd.InputStream(device=dev, channels=1, samplerate=16000,
+                                               blocksize=3200, callback=_sd_cb):
+                                 while not stop_ev.is_set():
+                                    time.sleep(0.5)
+                    else:
+                        # --- soundcard path (loopback object) ---
+                        with dev.recorder(samplerate=SAMPLE_RATE) as rec:
+                            print(f"[AUDIO_THREAD] ✓ Recording started for {dev_name}", flush=True)
+                            while not stop_ev.is_set():
+                                data = rec.record(numframes=int(SAMPLE_RATE * 0.2))
+                                if data.ndim > 1:
+                                    data = np.mean(data, axis=1)
+                                
+                                energy = np.abs(data).max()
+                                if energy > 0.0001:
+                                    data = data * 25.0
+                                    np.clip(data, -1.0, 1.0, out=data)
+                                
+                                if not q.full():
+                                    q.put_nowait(data)
+
+                except Exception as xe:
+                    logger.error(f"[AUDIO_THREAD] Fatal Error for {dev_name if 'dev_name' in locals() else '?'}: {xe}")
+
+            threading.Thread(target=internal_record_worker, args=(loopback_data, audio_queue, stop_event), daemon=True).start()
+            logger.info("✓ Audio capture thread started (Threaded Mode)")
+            
+            idx = 1
+            audio_buffer = []
+            samples_per_chunk = int(SAMPLE_RATE * 3.5)
+            
+            print("\n" + "="*50)
+            print("Starting Abuse Detection Monitoring Loop...")
+            print("="*50 + "\n")
+
+            last_heartbeat = 0
+            while get_device_state(device_id)['running']:
+                try:
+                    vol_status = "WAITING (SILENT)"
+                    latest_vol = 0
+                    if not audio_queue.empty():
+                        samples = audio_queue.queue[-1]
+                        latest_vol = float(np.abs(samples).max())
+                        if latest_vol > 0.001:
+                            vol_status = "SIGNAL OK"
                     
-                    chunk_start_rel = time.time() - session_start
-                    executor.submit(process_audio_chunk, chunk_data, idx, chunk_start_rel)
-                    idx += 1
-            except Exception as e:
-                print(f"[AUDIO_ERROR] Monitor loop: {e}", flush=True)
-                break
+                    fill_width = int(min(latest_vol * 100 * 5, 20))
+                    meter = "█" * fill_width + "░" * (20 - fill_width)
+                    _now_str = datetime.now().strftime("%H:%M:%S")
+                    
+                    print(f"\r[{_now_str}] [HEARING] {meter} | {vol_status}             ", end="", flush=True)
 
-        
-        # Cleanup
-        stop_event.set()
-        logger.info("Audio monitoring stopped.")
-        executor.shutdown(wait=False)
-    
-    except ImportError as e:
-        logger.warning(f"Audio libraries not available: {e}.")
-    
-    logger.info("=" * 60)
-    logger.info("MONITORING WORKER STOPPED")
-    logger.info("=" * 60)
+                    if time.time() - last_heartbeat > 2.0:
+                        socketio.emit('monitoring_heartbeat', {
+                            'device_id': device_id,
+                            'status': vol_status,
+                            'volume': latest_vol,
+                            'timestamp': _now_str
+                        }, room=f"device_{device_id}")
+                        last_heartbeat = time.time()
+
+                    try:
+                        data = audio_queue.get(timeout=0.1) 
+                        audio_buffer.extend(data.tolist())
+                    except queue.Empty:
+                        pass
+                    
+                    if len(audio_buffer) >= samples_per_chunk:
+                        print(f"\n[{datetime.now().strftime('%H:%M:%S')}] [HEARING] Processing {samples_per_chunk} samples for abuse analysis...", flush=True)
+                        chunk_data = np.array(audio_buffer[:samples_per_chunk], dtype=np.float32)
+                        audio_buffer = audio_buffer[samples_per_chunk:]
+                        chunk_start_rel = time.time() - session_start
+                        executor.submit(process_audio_chunk, chunk_data, idx, chunk_start_rel)
+                        idx += 1
+                except Exception as e:
+                    logger.error(f"[AUDIO_ERROR] Monitor loop: {e}")
+                    break
+
+        except Exception as e:
+            logger.error(f"[MONITOR] Worker crash: {e}")
+        finally:
+            get_device_state(device_id)['running'] = False
+            socketio.emit('status_update', {'device_id': device_id, 'running': False}, room=f"device_{device_id}")
+            if 'stop_event' in locals():
+                stop_event.set()
+            if 'executor' in locals():
+                executor.shutdown(wait=False)
+
+    except Exception as e:
+        logger.error(f"[MONITOR] Primary worker crash: {e}")
+    finally:
+        # Final safety cleanup for any non-caught errors
+        get_device_state(device_id)['running'] = False
+        socketio.emit('status_update', {'device_id': device_id, 'running': False}, room=f"device_{device_id}")
+        logger.info("[MONITOR] Monitoring worker thread terminated.")
 
 
 

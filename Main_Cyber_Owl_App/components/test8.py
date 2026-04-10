@@ -300,8 +300,8 @@ except Exception:
 ALERT_BUFFER = []
 ALERT_LOCK = threading.Lock()
 
-# GLOBAL EMAIL DISABLE FLAG
-EMAIL_DISABLED = True
+# GLOBAL EMAIL DISABLE FLAG (Load from env if available)
+EMAIL_DISABLED = os.getenv("EMAIL_DISABLED", "true").lower() == "true"
 
 def send_email_notification(subject, body, to=ALERT_EMAIL_TO, alerts_data=None, is_status_update=False, status_type=None, timestamp=None):
     """
